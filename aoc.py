@@ -7,6 +7,8 @@ from pathlib import Path
 import click
 from duckdb import sql
 
+import udf
+
 
 @click.command()
 @click.argument("day")
