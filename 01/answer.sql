@@ -96,10 +96,6 @@ with
     from first_and_last_word_or_digit
  )
 
-select *
 from part_1
-
 union all
-
-select *
 from part_2
