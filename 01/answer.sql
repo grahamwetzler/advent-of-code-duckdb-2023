@@ -18,7 +18,6 @@ with
           else last_digit_str
         end as last_digit
       , instr(reverse(input), last_digit) as last_digit_position
-      , [first_digit, last_digit]::int[2] as digits
     from input
   )
 
