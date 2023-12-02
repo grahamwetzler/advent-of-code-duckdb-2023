@@ -13,18 +13,9 @@ with
     from input
   )
 
-  , subset_ids as (
-    select
-      game_id
-      , row_number() over (partition by game_id) as subset_id
-      , subset
-    from subset_unnest
-  )
-
   , counts as (
     select
       game_id
-      , subset_id
       , string_clean(
           regexp_extract(subset, '(\d+) blue', 1)
       )::int as blue
@@ -39,7 +30,7 @@ with
           then false
           else true
         end as possible
-    from subset_ids
+    from subset_unnest
   )
 
   , possible_games as (
