@@ -16,13 +16,13 @@ with
   , counts as (
     select
       game_id
-      , string_clean(
+      , trim_null(
           regexp_extract(subset, '(\d+) blue', 1)
       )::int as blue
-      , string_clean(
+      , trim_null(
           regexp_extract(subset, '(\d+) red', 1)
       )::int as red
-      , string_clean(
+      , trim_null(
           regexp_extract(subset, '(\d+) green', 1)
       )::int as green
       , case

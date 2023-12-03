@@ -6,17 +6,13 @@ with
   , first_and_last_digits as (
     select
       input
-      , regexp_extract(input, '\d') as first_digit_str
-      , case first_digit_str
-          when '' then null
-          else first_digit_str
-        end as first_digit
+      , trim_null(
+          regexp_extract(input, '\d')
+      ) as first_digit
       , instr(input, first_digit) as first_digit_position
-      , regexp_extract(reverse(input), '\d') as last_digit_str
-      , case last_digit_str
-          when '' then null
-          else last_digit_str
-        end as last_digit
+      , trim_null(
+          regexp_extract(reverse(input), '\d')
+      ) as last_digit
       , instr(reverse(input), last_digit) as last_digit_position
     from input
   )
@@ -25,7 +21,7 @@ with
     select
       1 as part
       , sum(
-          (first_digit_str || last_digit_str)::int
+          (first_digit || last_digit)::int
       ) as answer
     from first_and_last_digits
   )
@@ -46,13 +42,17 @@ with
   , word_positions as (
     select
       *
-      , regexp_extract(input, word) as first_word
+      , trim_null(
+          regexp_extract(input, word)
+      ) as first_word
       , case
-          when first_word != '' then instr(input, first_word)
+          when first_word is not null then instr(input, first_word)
         end as first_word_position
-      , regexp_extract(reverse(input), reverse(word)) as last_word
+      , trim_null(
+          regexp_extract(reverse(input), reverse(word))
+      ) as last_word
       , case
-          when last_word != '' then instr(reverse(input), last_word)
+          when last_word is not null then instr(reverse(input), last_word)
         end as last_word_position
     from first_and_last_digits
     cross join word_to_digit_mapping

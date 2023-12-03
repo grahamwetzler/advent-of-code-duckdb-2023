@@ -2,15 +2,12 @@ import duckdb
 from duckdb.typing import VARCHAR
 
 
-def string_clean(string) -> VARCHAR:
+def trim_null(string: str) -> VARCHAR:
     return None if string == "" else string.strip()
 
 
 funcs = [
-    dict(
-        name="string_clean",
-        function=string_clean,
-    )
+    dict(name="trim_null", function=trim_null),
 ]
 
 for func in funcs:
