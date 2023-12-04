@@ -1,5 +1,8 @@
 with
   input as (
+    /*
+      Start with numbering each row and extracting all part numbers
+    */
     select
       row_number() over () as row
       , #1 as input
@@ -8,6 +11,9 @@ with
   )
 
   , rows as (
+    /*
+      Unnest the input to get one row per character
+    */
     select
       row
       , unnest(
@@ -17,6 +23,9 @@ with
   )
 
   , grid as (
+    /*
+      Add a column identifer
+    */
     select
       row
       , row_number() over (partition by row) as col
@@ -28,6 +37,9 @@ with
   )
 
   , part_number_groups as (
+    /*
+      Create a unique id for each group of part numbers
+    */
     select
       row
       , col
@@ -42,6 +54,10 @@ with
   )
 
   , part_numbers as (
+    /*
+      Aggreate each part numbers into an integer. Also determine where each part number
+      starts and stops.
+    */
     select
       row
       , part_number_group
@@ -53,6 +69,9 @@ with
   )
 
   , symbols as (
+    /*
+      Find all symbol locations.
+    */
     select
       row
       , col
@@ -62,6 +81,10 @@ with
   )
 
   , joined as (
+    /*
+      Join symbols and part numbers to the grid following the rules for adjacent part
+      numbers
+    */
     select
       grid.row
       , grid.col
@@ -101,6 +124,9 @@ with
   )
 
   , gear_ratios as (
+    /*
+      Determine product of the gear ratios
+    */
     select
       row
       , col
